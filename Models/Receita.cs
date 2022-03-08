@@ -1,4 +1,6 @@
-﻿namespace blog_receitas_api.Models
+﻿using System.Collections.Generic;
+
+namespace blog_receitas_api.Models
 {
     public class Receita
     {
@@ -14,5 +16,10 @@
 
         public int TipoId { get; set; }
         public virtual Tipo Tipo { get; set; }
+
+
+        public virtual List<Ingrediente> Ingredientes { get; set; }
+        public virtual List<ModoDePreparo> ModoDePreparos { get; set; }
+
     }
 }

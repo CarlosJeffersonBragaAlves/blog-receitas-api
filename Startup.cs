@@ -34,6 +34,11 @@ namespace blog_receitas_api
                 options.UseMySql(mySqlConnection,
                       ServerVersion.AutoDetect(mySqlConnection)));
 
+            services.AddCors();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -51,6 +56,9 @@ namespace blog_receitas_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "blog_receitas_api v1"));
             }
+
+
+            app.UseCors(option => option.AllowAnyOrigin()); ;
 
             app.UseHttpsRedirection();
 

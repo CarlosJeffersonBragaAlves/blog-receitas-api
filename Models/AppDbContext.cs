@@ -6,6 +6,10 @@ namespace blog_receitas_api.Models
     {
 
         public DbSet<Tipo> Tipos { get; set; }
+        public DbSet<Receita> Receitas { get; set; }
+        public DbSet<Ingrediente> Ingredientes { get; set; }
+        public DbSet<ModoDePreparo> ModoDePreparos { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
