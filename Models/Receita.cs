@@ -6,6 +6,10 @@ namespace blog_receitas_api.Models
     {
         public int Id { get; set; }
 
+        public byte[] img { get; set; }
+
+        public int destaque { get; set; }
+
         public string Title { get; set; }
 
         public string Subtitle { get; set; }
@@ -17,6 +21,8 @@ namespace blog_receitas_api.Models
         public int TipoId { get; set; }
         public virtual Tipo Tipo { get; set; }
 
+        public int StatusId { get; set; }
+        public virtual Status Status { get; set; }
 
         public virtual List<Ingrediente> Ingredientes { get; set; }
         public virtual List<ModoDePreparo> ModoDePreparos { get; set; }

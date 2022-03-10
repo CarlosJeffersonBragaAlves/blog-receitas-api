@@ -9,6 +9,8 @@ namespace blog_receitas_api.Models
         public DbSet<Receita> Receitas { get; set; }
         public DbSet<Ingrediente> Ingredientes { get; set; }
         public DbSet<ModoDePreparo> ModoDePreparos { get; set; }
+        public DbSet<Status> Status { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -11,8 +11,8 @@ using blog_receitas_api.Models.Shared;
 
 namespace blog_receitas_api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ReceitasController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -53,7 +53,7 @@ namespace blog_receitas_api.Controllers
 
 
         [HttpPost("paged")]
-        public async Task<ActionResult> PostReceitas([FromBody] OptionsFilter options)
+        public async Task<ActionResult> PostReceitas(OptionsFilter options)
         {
             var itens = _context.Receitas.Include(r => r.Ingredientes)
                                          .Include(r => r.ModoDePreparos)
