@@ -6,7 +6,7 @@ namespace blog_receitas_api.Models
     {
         public int Id { get; set; }
 
-        public byte[] img { get; set; }
+        public string UrlImg { get; set; }
 
         public int destaque { get; set; }
 
@@ -17,6 +17,8 @@ namespace blog_receitas_api.Models
         public string Time { get; set; }
 
         public string Portions { get; set; }
+
+        public string difficulty { get; set; }
 
         public int TipoId { get; set; }
         public virtual Tipo Tipo { get; set; }

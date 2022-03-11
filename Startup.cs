@@ -60,7 +60,7 @@ namespace blog_receitas_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "blog_receitas_api v1"));
             }
-
+            app.UseStaticFiles();
 
             app.UseCors(options =>
             options.WithOrigins("http://localhost:4200")

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using blog_receitas_api.Models;
 using X.PagedList;
 using blog_receitas_api.Models.Shared;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace blog_receitas_api.Controllers
 {
@@ -16,11 +18,17 @@ namespace blog_receitas_api.Controllers
     public class ReceitasController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private IWebHostEnvironment Environment;
 
-        public ReceitasController(AppDbContext context)
+
+        public ReceitasController(AppDbContext context, IWebHostEnvironment _environment)
         {
             _context = context;
+            Environment = _environment;
         }
+
+
+
 
         // GET: api/Receitas
         [HttpGet]
@@ -33,14 +41,14 @@ namespace blog_receitas_api.Controllers
         }
 
 
-        [HttpGet("relacionado/{id}")]
-        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitas(int id)
+        [HttpGet("relacionado/{id}/{tipo}")]
+        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitas(int id,int tipo)
         {
            var itens = RandomizeGenericList(
                     await _context.Receitas.Include(r => r.Ingredientes)
                                           .Include(r => r.ModoDePreparos)
                                           .Include(r => r.Tipo)
-                                          .Where(r => r.TipoId == id)
+                                          .Where(r => r.TipoId == tipo && r.Id != id)
                                           .ToListAsync()
                 );
 
@@ -48,7 +56,21 @@ namespace blog_receitas_api.Controllers
         }
 
 
+        [HttpGet("slide")]
+        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitasSlide()
+        {
+            var itens = await _context.Receitas.ToListAsync();
 
+            var receitas = itens.Where(r => r.destaque == 1).ToList();
+
+            if(receitas.Count() < 6)
+            {
+                receitas.AddRange(itens.OrderByDescending(r => r.Id).ToList().GetRange(0, (6 - receitas.Count())));
+                
+            }
+
+            return receitas;
+        }
 
 
 
@@ -65,6 +87,18 @@ namespace blog_receitas_api.Controllers
                 itens = itens.Where(r => r.TipoId == options.Tipo);
             }
 
+            if(options.Status != 2)
+            {
+                if(options.Status == 1)
+                {
+                    itens = itens.Where(r => r.StatusId == 1);
+                }
+            }
+            else
+            {
+                itens = itens.Where(r => r.StatusId == 2);
+            }
+
             if(options.Filter.Length > 0)
             {
                 options.Filter = options.Filter.Trim().ToUpper();
@@ -78,6 +112,10 @@ namespace blog_receitas_api.Controllers
 
             var receitas = await itens.ToPagedListAsync(options.Page, options.Size);
 
+
+
+
+          
             return Ok(new
             {
                 itens = receitas,

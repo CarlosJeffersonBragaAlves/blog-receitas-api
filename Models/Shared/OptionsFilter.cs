@@ -4,9 +4,9 @@
     {
         public int Page { get; set; } = 1;
 
-        public int Size { get; set; } = 10;
+        public int Size { get; set; } = 6;
 
-        public int Status { get; set; } = 0;
+        public int Status { get; set; } = 2;
 
         public string Filter { get; set; } = "";
 
