@@ -65,7 +65,10 @@ namespace blog_receitas_api.Controllers
 
             if(receitas.Count() < 6)
             {
-                receitas.AddRange(itens.OrderByDescending(r => r.Id).ToList().GetRange(0, (6 - receitas.Count())));
+                receitas.AddRange(itens.Where(r => r.destaque == 2)
+                                       .OrderByDescending(r => r.Id)
+                                       .ToList()
+                                       .GetRange(0, (6 - receitas.Count())));
                 
             }
 
@@ -99,6 +102,11 @@ namespace blog_receitas_api.Controllers
                 itens = itens.Where(r => r.StatusId == 2);
             }
 
+            if(options.Destaque == 1)
+            {
+                itens = itens.Where(r => r.destaque == 1);
+            }
+
             if(options.Filter.Length > 0)
             {
                 options.Filter = options.Filter.Trim().ToUpper();
@@ -110,7 +118,7 @@ namespace blog_receitas_api.Controllers
             }
 
 
-            var receitas = await itens.ToPagedListAsync(options.Page, options.Size);
+            var receitas = await itens.OrderByDescending(i => i.DataCriacao).ToPagedListAsync(options.Page, options.Size);
 
 
 
@@ -149,6 +157,8 @@ namespace blog_receitas_api.Controllers
             {
                 return BadRequest();
             }
+            if(receita.DataPublicacao != null)
+                receita.DataPublicacao = receita.StatusId == 2 ? DateTime.Now : null;
 
             _context.Entry(receita).State = EntityState.Modified;
 
@@ -177,6 +187,9 @@ namespace blog_receitas_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Receita>> PostReceita(Receita receita)
         {
+            receita.DataCriacao = DateTime.Now;
+            receita.DataPublicacao = receita.StatusId == 2 ? DateTime.Now : null;
+
             _context.Receitas.Add(receita);
             await _context.SaveChangesAsync();
 

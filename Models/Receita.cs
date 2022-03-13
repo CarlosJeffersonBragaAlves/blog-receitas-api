@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace blog_receitas_api.Models
 {
@@ -19,6 +20,10 @@ namespace blog_receitas_api.Models
         public string Portions { get; set; }
 
         public string difficulty { get; set; }
+
+        public DateTime? DataCriacao { get; set; }
+
+        public DateTime? DataPublicacao { get; set; }
 
         public int TipoId { get; set; }
         public virtual Tipo Tipo { get; set; }

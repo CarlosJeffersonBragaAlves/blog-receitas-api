@@ -14,6 +14,8 @@
 
         public string Portions { get; set; } = "";
 
+        public int Destaque { get; set; } = 2;
+
         public int Tipo { get; set; } = 0;
 
         public int Limit { get; set; } = 20;
